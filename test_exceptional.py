@@ -22,11 +22,25 @@ def test_suppress():
 def test_collector():
     c = exceptional.Collector(ValueError, TypeError)
 
-    assert 4 == c.run(int, 4)  # works fine
-    c.run(int, 'abc')  # raises ValueError
-    c.run(int, object())  # raises TypeError
-    assert 5 == c.run(int, 5)  # also works fine
+    # This should work fine
+    assert 4 == c.run(int, 4)
 
-    assert len(c.exceptions) == 2
+    # These calls raise ValueError and TypeError
+    c.run(int, 'abc')
+    c.run(int, object())
+
+    # It should keep working...
+    assert 5 == c.run(int, 5)
+
+    # Context manager should behave the same as .run()
+    with c:
+        raise TypeError()
+
+    with pytest.raises(IOError):
+        with c:
+            raise IOError()
+
+    assert len(c.exceptions) == 3
     assert isinstance(c.exceptions[0], ValueError)
     assert isinstance(c.exceptions[1], TypeError)
+    assert isinstance(c.exceptions[2], TypeError)
