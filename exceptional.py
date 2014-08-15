@@ -13,3 +13,17 @@ def suppress(*exceptions):
         yield
     except exceptions:
         pass
+
+
+class Collector(object):
+
+    def __init__(self, *exceptions):
+        self._except_clause = exceptions
+
+        self.exceptions = []
+
+    def run(self, f, *args, **kwargs):
+        try:
+            return f(*args, **kwargs)
+        except self._except_clause as exc:
+            self.exceptions.append(exc)
