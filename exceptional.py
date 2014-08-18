@@ -2,6 +2,13 @@
 import contextlib
 
 
+__all__ = [
+    'suppress',
+    'raiser',
+    'Collector',
+]
+
+
 try:
     # Prefer the version in the stdlib
     suppress = contextlib.suppress
