@@ -15,6 +15,22 @@ def suppress(*exceptions):
         pass
 
 
+def raiser(exception=Exception):
+    """
+    Create a function that raises `exception` when invoked.
+
+    This function can be used to quickly create a callback function that
+    raises an exception. This is something a lambda expression cannot do
+    since those cannot contain a ``raise`` statement.
+
+    Any arguments that are passed to the returned function will be
+    passed along to the exception's constructor.
+    """
+    def f(*args, **kwargs):
+        raise exception(*args, **kwargs)
+    return f
+
+
 class Collector(object):
 
     def __init__(self, *exceptions):

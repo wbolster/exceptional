@@ -19,6 +19,26 @@ def test_suppress():
             raise ValueError()
 
 
+def test_raiser_no_args():
+    f = exceptional.raiser()
+    with pytest.raises(Exception):
+        f()
+
+
+def test_raiser_args():
+    f = exceptional.raiser(ValueError)
+
+    with pytest.raises(ValueError):
+        f()
+
+    try:
+        f('abc')
+    except ValueError as exc:
+        assert 'abc' == str(exc)
+    else:
+        assert False, 'did not raise'
+
+
 def test_collector():
     c = exceptional.Collector(ValueError, TypeError)
 
