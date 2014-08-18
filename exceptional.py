@@ -23,10 +23,8 @@ class Collector(object):
         self.exceptions = []
 
     def run(self, f, *args, **kwargs):
-        try:
+        with self:
             return f(*args, **kwargs)
-        except self._collectable_exceptions as exc:
-            self.exceptions.append(exc)
 
     def __enter__(self):
         pass
