@@ -2,17 +2,20 @@
 import contextlib
 
 
-@contextlib.contextmanager
-def suppress(*exceptions):
-    """
-    Context manager to suppress specific exceptions.
-
-    :param exceptions: the exception types to suppress
-    """
-    try:
-        yield
-    except exceptions:
-        pass
+try:
+    # Prefer the version in the stdlib
+    suppress = contextlib.suppress
+except AttributeError:
+    # Fallback for Python < 3.4
+    @contextlib.contextmanager
+    def suppress(*exceptions):
+        """
+        Context manager to suppress specified exceptions
+        """
+        try:
+            yield
+        except exceptions:
+            pass
 
 
 def raiser(exception=Exception):
