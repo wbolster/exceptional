@@ -3,7 +3,7 @@ import exceptional
 import pytest
 
 
-def test_suppress():
+def test_suppress_cm():
 
     # One argument
     with exceptional.suppress(ValueError):
@@ -17,6 +17,24 @@ def test_suppress():
     with pytest.raises(ValueError):
         with exceptional.suppress(TypeError):
             raise ValueError()
+
+
+def test_suppress_decorator():
+
+    @exceptional.suppress(ValueError)
+    def a():
+        raise ValueError()
+
+    @exceptional.suppress(TypeError)
+    def b():
+        raise ValueError()
+
+    # Should not raise
+    a()
+
+    # Should raise
+    with pytest.raises(ValueError):
+        b()
 
 
 def test_raiser_no_args():

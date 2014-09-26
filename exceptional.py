@@ -1,5 +1,6 @@
 
 import contextlib
+import functools
 
 
 __all__ = [
@@ -16,7 +17,16 @@ except AttributeError:
     # Fallback for Python < 3.4
     class suppress(object):
         """
-        Context manager to suppress specified exceptions
+        Context manager to suppress specified exceptions::
+
+            with suppress(ValueError):
+                do_something()
+
+        This can also be used as a decorator:
+
+            @suppress(ValueError):
+            def do_something():
+                pass
         """
         def __init__(self, *exceptions):
             self._exceptions = exceptions
@@ -27,6 +37,14 @@ except AttributeError:
         def __exit__(self, exc_type, exc_value, traceback):
             return (exc_type is not None
                     and issubclass(exc_type, self._exceptions))
+
+        def __call__(self, func):
+            @functools.wraps(func)
+            def wrapped(*args, **kwds):
+                with self:
+                    return func(*args, **kwds)
+
+            return wrapped
 
 
 def raiser(exception=Exception, *args, **kwargs):
