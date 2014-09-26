@@ -14,7 +14,7 @@ try:
     suppress = contextlib.suppress
 except AttributeError:
     # Fallback for Python < 3.4
-    class suppress:
+    class suppress(object):
         """
         Context manager to suppress specified exceptions
         """
