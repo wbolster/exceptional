@@ -1,5 +1,4 @@
 
-import contextlib
 import functools
 
 
@@ -10,41 +9,38 @@ __all__ = [
 ]
 
 
-try:
-    # Prefer the version in the stdlib
-    suppress = contextlib.suppress
-except AttributeError:
-    # Fallback for Python < 3.4
-    class suppress(object):
-        """
-        Context manager to suppress specified exceptions::
+# XXX: Do not use the contextlib.suppress() from the stdlib, since
+# that version (as of Python 3.4) cannot be used as a decorator.
+class suppress(object):
+    """
+    Context manager to suppress specified exceptions::
 
-            with suppress(ValueError):
-                do_something()
+        with suppress(ValueError):
+            do_something()
 
-        This can also be used as a decorator:
+    This can also be used as a decorator:
 
-            @suppress(ValueError):
-            def do_something():
-                pass
-        """
-        def __init__(self, *exceptions):
-            self._exceptions = exceptions
-
-        def __enter__(self):
+        @suppress(ValueError):
+        def do_something():
             pass
+    """
+    def __init__(self, *exceptions):
+        self._exceptions = exceptions
 
-        def __exit__(self, exc_type, exc_value, traceback):
-            return (exc_type is not None
-                    and issubclass(exc_type, self._exceptions))
+    def __enter__(self):
+        pass
 
-        def __call__(self, func):
-            @functools.wraps(func)
-            def wrapped(*args, **kwds):
-                with self:
-                    return func(*args, **kwds)
+    def __exit__(self, exc_type, exc_value, traceback):
+        return (exc_type is not None
+                and issubclass(exc_type, self._exceptions))
 
-            return wrapped
+    def __call__(self, func):
+        @functools.wraps(func)
+        def wrapped(*args, **kwds):
+            with self:
+                return func(*args, **kwds)
+
+        return wrapped
 
 
 def raiser(exception=Exception, *args, **kwargs):
