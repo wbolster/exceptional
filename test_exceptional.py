@@ -26,13 +26,13 @@ def test_raiser_no_args():
 
 
 def test_raiser_args():
-    f = exceptional.raiser(ValueError)
+    f = exceptional.raiser(ValueError, 'abc')
 
     with pytest.raises(ValueError):
         f()
 
     try:
-        f('abc')
+        f(123)
     except ValueError as exc:
         assert 'abc' == str(exc)
     else:

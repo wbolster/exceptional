@@ -25,18 +25,22 @@ except AttributeError:
             pass
 
 
-def raiser(exception=Exception):
+def raiser(exception=Exception, *args, **kwargs):
     """
     Create a function that raises `exception` when invoked.
 
-    This function can be used to quickly create a callback function that
-    raises an exception. This is something a lambda expression cannot do
-    since those cannot contain a ``raise`` statement.
+    This can be used to quickly create a callback function that raises
+    an exception. This is something a lambda expression cannot do since
+    those cannot contain a ``raise`` statement.
 
-    Any arguments that are passed to the returned function will be
-    passed along to the exception's constructor.
+    Any additional arguments (both positional and keyword) passed to
+    this function will be passed along to the exception's constructor.
+
+    The returned function will accept (and ignore) any arguments, making
+    it suitable for use as a callback, regardless of the expected
+    signature.
     """
-    def f(*args, **kwargs):
+    def f(*_, **__):
         raise exception(*args, **kwargs)
     return f
 
