@@ -13,12 +13,14 @@ __all__ = [
 # that version (as of Python 3.4) cannot be used as a decorator.
 class suppress(object):
     """
-    Context manager to suppress specified exceptions::
+    Suppress the specified exceptions.
+
+    This can be used as a context manager::
 
         with suppress(ValueError):
             do_something()
 
-    This can also be used as a decorator:
+    Additionally, this can be used as a decorator:
 
         @suppress(ValueError):
         def do_something():
