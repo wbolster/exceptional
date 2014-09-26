@@ -52,8 +52,7 @@ def raiser(exception=Exception, *args, **kwargs):
 class Collector(object):
 
     def __init__(self, *exceptions):
-        self._collectable_exceptions = exceptions
-
+        self._collectable = exceptions
         self.exceptions = []
 
     def run(self, f, *args, **kwargs):
@@ -64,7 +63,7 @@ class Collector(object):
         pass
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        if isinstance(exc_val, self._collectable_exceptions):
+        if exc_type is not None and issubclass(exc_type, self._collectable):
             self.exceptions.append(exc_val)
             return True
 
