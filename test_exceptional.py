@@ -61,6 +61,14 @@ def test_raiser_args():
         assert False, "did not raise"
 
 
+def test_raiser_repr():
+    r = exceptional.raiser(ValueError)
+    assert str(r) == repr(r) == "raiser(ValueError)"
+
+    r = exceptional.raiser(ValueError, "some message")
+    assert str(r) == repr(r) == "raiser(ValueError, ...)"
+
+
 def test_collector():
     c = exceptional.Collector(ValueError, TypeError)
 

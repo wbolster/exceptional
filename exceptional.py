@@ -63,11 +63,25 @@ def raiser(exception=Exception, *args, **kwargs):
     it suitable for use as a callback, regardless of the expected
     signature.
     """
+    return Raiser(exception, args, kwargs)
 
-    def f(*_, **__):
-        raise exception(*args, **kwargs)
 
-    return f
+class Raiser:
+    def __init__(self, exception_class, exception_args, exception_kwargs):
+        self.exception_class = exception_class
+        self.exception_args = exception_args
+        self.exception_kwargs = exception_kwargs
+
+    def __call__(self, *_args, **_kwargs):
+        exc = self.exception_class(*self.exception_args, **self.exception_kwargs)
+        raise exc
+
+    def __repr__(self):
+        name = self.exception_class.__qualname__
+        if self.exception_args or self.exception_kwargs:
+            return "raiser({}, ...)".format(name)
+        else:
+            return "raiser({})".format(name)
 
 
 class Collector(object):
