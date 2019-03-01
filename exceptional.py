@@ -4,24 +4,7 @@ import functools
 __all__ = ["suppress", "raiser", "Collector"]
 
 
-# XXX: Do not use the contextlib.suppress() from the stdlib, since
-# that version (as of Python 3.4) cannot be used as a decorator.
-class suppress(object):
-    """
-    Suppress the specified exceptions.
-
-    This can be used as a context manager::
-
-        with suppress(ValueError):
-            do_something()
-
-    Additionally, this can be used as a decorator:
-
-        @suppress(ValueError):
-        def do_something():
-            pass
-    """
-
+class ExceptionSuppressor:
     def __init__(self, *exceptions):
         self._exceptions = exceptions
 
@@ -38,6 +21,27 @@ class suppress(object):
                 return func(*args, **kwds)
 
         return wrapped
+
+
+def suppress(*exceptions):
+    """
+    Suppress the specified exceptions.
+
+    This can be used as a context manager::
+
+        with suppress(ValueError):
+            do_something()
+
+    Additionally, this can be used as a decorator:
+
+        @suppress(ValueError):
+        def do_something():
+            pass
+
+    This is similar to contextlib.suppress() from the standard library,
+    but this implementation can also be used as a decorator.
+    """
+    return ExceptionSuppressor(*exceptions)
 
 
 def raiser(exception=Exception, *args, **kwargs):
