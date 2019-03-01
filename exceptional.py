@@ -84,25 +84,50 @@ class Raiser:
             return "raiser({})".format(name)
 
 
+def collect(*exceptions):
+    """
+    todo
+    """
+    return Collector(*exceptions)
+
+
 class Collector(object):
     def __init__(self, *exceptions):
-        self._collectable = exceptions
-        self.exceptions = []
+        self._exceptions = exceptions
+        self._results = []
 
     def run(self, f, *args, **kwargs):
         with self:
-            return f(*args, **kwargs)
+            rv = f(*args, **kwargs)
+            self._results.append((rv, None))
 
     def __enter__(self):
-        pass
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
 
         if exc_type is None:
             return True  # no exception happened at all
 
-        if issubclass(exc_type, self._collectable):
-            self.exceptions.append(exc_val)
+        if issubclass(exc_type, self._exceptions):
+            self._results.append((None, exc_val))
             return True  # handled
 
         return False  # not handled
+
+    def __repr__(self):
+        formatted = ", ".join(exc.__name__ for exc in self._exceptions)
+        return "collect({})".format(formatted)
+
+    def __iter__(self):
+        yield from self._results
+
+    def iter_results(self):
+        for rv, exc in self._results:
+            if exc is None:
+                yield rv
+
+    def iter_exceptions(self):
+        for rv, exc in self._results:
+            if exc is not None:
+                yield exc
