@@ -87,11 +87,6 @@ class Collector(object):
         if exc_type is None:
             return True  # no exception happened at all
 
-        if not isinstance(exc_val, exc_type):
-            # This happens with Python 2.6, see
-            # http://bugs.python.org/issue7853
-            exc_val = exc_type(exc_val)
-
         if issubclass(exc_type, self._collectable):
             self.exceptions.append(exc_val)
             return True  # handled
