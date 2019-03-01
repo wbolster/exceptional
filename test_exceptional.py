@@ -1,4 +1,3 @@
-
 import exceptional
 import pytest
 
@@ -20,7 +19,6 @@ def test_suppress_cm():
 
 
 def test_suppress_decorator():
-
     @exceptional.suppress(ValueError)
     def a():
         raise ValueError()
@@ -44,7 +42,7 @@ def test_raiser_no_args():
 
 
 def test_raiser_args():
-    f = exceptional.raiser(ValueError, 'abc')
+    f = exceptional.raiser(ValueError, "abc")
 
     with pytest.raises(ValueError):
         f()
@@ -52,9 +50,9 @@ def test_raiser_args():
     try:
         f(123)
     except ValueError as exc:
-        assert 'abc' == str(exc)
+        assert "abc" == str(exc)
     else:
-        assert False, 'did not raise'
+        assert False, "did not raise"
 
 
 def test_collector():
@@ -64,7 +62,7 @@ def test_collector():
     assert 4 == c.run(int, 4)
 
     # These calls raise ValueError and TypeError
-    c.run(int, 'abc')
+    c.run(int, "abc")
     c.run(int, object())
 
     # It should keep working...

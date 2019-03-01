@@ -1,12 +1,7 @@
-
 import functools
 
 
-__all__ = [
-    'suppress',
-    'raiser',
-    'Collector',
-]
+__all__ = ["suppress", "raiser", "Collector"]
 
 
 # XXX: Do not use the contextlib.suppress() from the stdlib, since
@@ -26,6 +21,7 @@ class suppress(object):
         def do_something():
             pass
     """
+
     def __init__(self, *exceptions):
         self._exceptions = exceptions
 
@@ -33,8 +29,7 @@ class suppress(object):
         pass
 
     def __exit__(self, exc_type, exc_value, traceback):
-        return (exc_type is not None
-                and issubclass(exc_type, self._exceptions))
+        return exc_type is not None and issubclass(exc_type, self._exceptions)
 
     def __call__(self, func):
         @functools.wraps(func)
@@ -60,13 +55,14 @@ def raiser(exception=Exception, *args, **kwargs):
     it suitable for use as a callback, regardless of the expected
     signature.
     """
+
     def f(*_, **__):
         raise exception(*args, **kwargs)
+
     return f
 
 
 class Collector(object):
-
     def __init__(self, *exceptions):
         self._collectable = exceptions
         self.exceptions = []
