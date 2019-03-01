@@ -4,8 +4,8 @@ setup(
     name='exceptional',
     description="exception handling utilities",
     version='0.1',
-    author="Wouter Bolsterlee",
-    author_email="uws@xs4all.nl",
+    author="wouter bolsterlee",
+    author_email="wouter@bolsterl.ee",
     url='https://github.com/wbolster/exceptional',
     license="BSD",
     classifiers=[
