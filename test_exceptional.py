@@ -2,7 +2,7 @@ import exceptional
 import pytest
 
 
-def test_suppress_cm():
+def test_suppress_context_manager():
 
     # One argument
     with exceptional.suppress(ValueError):
