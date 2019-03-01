@@ -14,6 +14,10 @@ class ExceptionSuppressor:
     def __exit__(self, exc_type, exc_value, traceback):
         return exc_type is not None and issubclass(exc_type, self._exceptions)
 
+    def __repr__(self):
+        formatted = ", ".join(exc.__name__ for exc in self._exceptions)
+        return "suppress({})".format(formatted)
+
     def __call__(self, func):
         @functools.wraps(func)
         def wrapped(*args, **kwds):
