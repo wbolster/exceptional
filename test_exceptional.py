@@ -5,8 +5,7 @@ import pytest
 def test_suppress_repr():
     x = exceptional.suppress(KeyError, IndexError)
     expected = "suppress(KeyError, IndexError)"
-    assert str(x) == expected
-    assert repr(x) == expected
+    assert str(x) == repr(x) == expected
 
 
 def test_suppress_context_manager():
