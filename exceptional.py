@@ -36,7 +36,7 @@ def suppress(*exceptions):
         with suppress(ValueError):
             do_something()
 
-    Additionally, this can be used as a decorator:
+    Additionally, this can be used as a decorator::
 
         @suppress(ValueError):
         def do_something():
