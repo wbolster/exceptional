@@ -81,7 +81,6 @@ it could result in an ever-growing list of collected exceptions which
 cannot be cleared.
 
 .. autofunction:: exceptional.collect
-.. autoclass:: exceptional.Collector
 
 
 Creating exception-raising callables
