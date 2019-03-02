@@ -18,11 +18,11 @@ class ExceptionSuppressor:
         formatted = ", ".join(exc.__name__ for exc in self._exceptions)
         return "suppress({})".format(formatted)
 
-    def __call__(self, func):
-        @functools.wraps(func)
+    def __call__(self, f):
+        @functools.wraps(f)
         def wrapped(*args, **kwds):
             with self:
-                return func(*args, **kwds)
+                return f(*args, **kwds)
 
         return wrapped
 
