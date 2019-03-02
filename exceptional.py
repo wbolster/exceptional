@@ -29,44 +29,27 @@ class ExceptionSuppressor:
 
 def suppress(*exceptions):
     """
-    Suppress the specified exceptions.
+    Suppress the specified exception(s).
 
-    This can be used as a context manager::
-
-        with suppress(ValueError):
-            do_something()
-
-    Additionally, this can be used as a decorator::
-
-        @suppress(ValueError):
-        def do_something():
-            pass
-
-    This is similar to contextlib.suppress() from the standard library,
-    but this implementation can also be used as a decorator.
+    Both a context manager and a decorator.
     """
     return ExceptionSuppressor(*exceptions)
 
 
 def raiser(exception=Exception, *args, **kwargs):
     """
-    Create a function that raises `exception` when invoked.
+    Create a callable that will immediately raise `exception` when called.
 
-    This can be used to quickly create a callback function that raises
-    an exception. This is something a lambda expression cannot do since
-    those cannot contain a ``raise`` statement.
-
-    Any additional arguments (both positional and keyword) passed to
-    this function will be passed along to the exception's constructor.
-
-    The returned function will accept (and ignore) any arguments, making
-    it suitable for use as a callback, regardless of the expected
-    signature.
+    Arguments, if any, will be passed along to the exception's constructor.
     """
     return Raiser(exception, args, kwargs)
 
 
 class Raiser:
+    """
+    Exception raising helper.
+    """
+
     def __init__(self, exception_class, exception_args, exception_kwargs):
         self.exception_class = exception_class
         self.exception_args = exception_args
