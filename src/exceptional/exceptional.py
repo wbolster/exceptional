@@ -1,9 +1,6 @@
 import functools
 
 
-__all__ = ["suppress", "raiser", "Collector"]
-
-
 class ExceptionSuppressor:
     def __init__(self, *exceptions):
         self._exceptions = exceptions

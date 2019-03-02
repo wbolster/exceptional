@@ -1,6 +1,6 @@
-from setuptools import setup
 import os
 
+from setuptools import setup, find_packages
 
 with open(os.path.join(os.path.dirname(__file__), "README.rst")) as fp:
     long_description = fp.read()
@@ -23,4 +23,6 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     py_modules=["exceptional"],
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
 )
