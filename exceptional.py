@@ -86,48 +86,37 @@ class Raiser:
 
 def collect(*exceptions):
     """
-    todo
+    Create a collector for the specified exceptions, when used as a context manager.
     """
     return Collector(*exceptions)
 
 
 class Collector(object):
+    """
+    Exception collectiong helper.
+
+    Use as a context manager; iterate to access the collected exceptions.
+    """
+
     def __init__(self, *exceptions):
         self._exceptions = exceptions
-        self._results = []
-
-    def run(self, f, *args, **kwargs):
-        with self:
-            rv = f(*args, **kwargs)
-            self._results.append((rv, None))
+        self._collected_exceptions = []
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-
         if exc_type is None:
-            return True  # no exception happened at all
-
-        if issubclass(exc_type, self._exceptions):
-            self._results.append((None, exc_val))
-            return True  # handled
-
-        return False  # not handled
+            return True
+        elif issubclass(exc_type, self._exceptions):
+            self._collected_exceptions.append(exc_val)
+            return True
+        else:
+            return False
 
     def __repr__(self):
         formatted = ", ".join(exc.__name__ for exc in self._exceptions)
         return "collect({})".format(formatted)
 
     def __iter__(self):
-        yield from self._results
-
-    def iter_results(self):
-        for rv, exc in self._results:
-            if exc is None:
-                yield rv
-
-    def iter_exceptions(self):
-        for rv, exc in self._results:
-            if exc is not None:
-                yield exc
+        yield from self._collected_exceptions

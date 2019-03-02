@@ -69,39 +69,23 @@ def test_raiser_repr():
     assert str(r) == repr(r) == "raiser(ValueError, ...)"
 
 
-def test_collector():
+def test_collector_context_manager():
     c = exceptional.collect(ValueError, TypeError)
 
-    # Run some functions.
-    c.run(int, 4)
-    c.run(int, "abc")  # raises ValueError
-    c.run(int, None)  # raises TypeError
-    c.run(int, 5)
+    with c:
+        pass
 
-    # Context manager should behave the same as .run()
     with c:
         raise TypeError()
 
-    # This exception should not be collected.
     with pytest.raises(IOError):
         with c:
+            # This exception should not be collected.
             raise IOError()
 
-    # Collector has collected results
-    assert len(list(c)) == 5
-    for rv, exc in c:
-        if rv is not None:
-            assert exc is None
-
-    # Collector has collected return values
-    assert list(c.iter_results()) == [4, 5]
-
-    # Collector has collected exceptions
-    exceptions = list(c.iter_exceptions())
-    assert len(exceptions) == 3
-    assert isinstance(exceptions[0], ValueError)
-    assert isinstance(exceptions[1], TypeError)
-    assert isinstance(exceptions[2], TypeError)
+    exceptions = list(c)
+    assert len(exceptions) == 1
+    assert type(exceptions[0]) == TypeError
 
 
 def test_collector_repr():
