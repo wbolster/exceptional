@@ -1,6 +1,15 @@
 import functools
 
 
+def suppress(*exceptions):
+    """
+    Suppress the specified exception(s).
+
+    Both a context manager and a decorator.
+    """
+    return ExceptionSuppressor(*exceptions)
+
+
 class ExceptionSuppressor:
     def __init__(self, *exceptions):
         self._exceptions = exceptions
@@ -24,23 +33,14 @@ class ExceptionSuppressor:
         return wrapped
 
 
-def suppress(*exceptions):
-    """
-    Suppress the specified exception(s).
-
-    Both a context manager and a decorator.
-    """
-    return ExceptionSuppressor(*exceptions)
-
-
 def collect(*exceptions):
     """
     Create a collector for the specified exceptions, when used as a context manager.
     """
-    return Collector(*exceptions)
+    return ExceptionCollector(*exceptions)
 
 
-class Collector(object):
+class ExceptionCollector(object):
     """
     Exception collectiong helper.
 
