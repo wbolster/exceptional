@@ -40,7 +40,7 @@ def collect(*exceptions):
     return ExceptionCollector(*exceptions)
 
 
-class ExceptionCollector(object):
+class ExceptionCollector:
     """
     Exception collectiong helper.
 
