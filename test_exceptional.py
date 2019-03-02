@@ -41,6 +41,30 @@ def test_suppress_decorator():
         b()
 
 
+def test_collector_context_manager():
+    c = exceptional.collect(ValueError, TypeError)
+
+    with c:
+        pass
+
+    with c:
+        raise TypeError()
+
+    with pytest.raises(IOError):
+        with c:
+            # This exception should not be collected.
+            raise IOError()
+
+    exceptions = list(c)
+    assert len(exceptions) == 1
+    assert type(exceptions[0]) == TypeError
+
+
+def test_collector_repr():
+    c = exceptional.collect(ValueError, TypeError)
+    assert str(c) == repr(c) == "collect(ValueError, TypeError)"
+
+
 def test_raiser_no_args():
     f = exceptional.raiser()
     with pytest.raises(Exception):
@@ -67,27 +91,3 @@ def test_raiser_repr():
 
     r = exceptional.raiser(ValueError, "some message")
     assert str(r) == repr(r) == "raiser(ValueError, ...)"
-
-
-def test_collector_context_manager():
-    c = exceptional.collect(ValueError, TypeError)
-
-    with c:
-        pass
-
-    with c:
-        raise TypeError()
-
-    with pytest.raises(IOError):
-        with c:
-            # This exception should not be collected.
-            raise IOError()
-
-    exceptions = list(c)
-    assert len(exceptions) == 1
-    assert type(exceptions[0]) == TypeError
-
-
-def test_collector_repr():
-    c = exceptional.collect(ValueError, TypeError)
-    assert str(c) == repr(c) == "collect(ValueError, TypeError)"
