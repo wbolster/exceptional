@@ -1,8 +1,14 @@
 from setuptools import setup
+import os
+
+
+with open(os.path.join(os.path.dirname(__file__), "README.rst")) as fp:
+    long_description = fp.read()
 
 setup(
     name="exceptional",
     description="exception handling utilities",
+    long_description=long_description,
     version="0.1",
     author="wouter bolsterlee",
     author_email="wouter@bolsterl.ee",
