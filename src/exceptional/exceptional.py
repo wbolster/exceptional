@@ -77,10 +77,10 @@ def raiser(exception=Exception, *args, **kwargs):
 
     Arguments, if any, will be passed along to the exception's constructor.
     """
-    return Raiser(exception, args, kwargs)
+    return ExceptionRaiser(exception, args, kwargs)
 
 
-class Raiser:
+class ExceptionRaiser:
     """
     Exception raising helper.
     """
