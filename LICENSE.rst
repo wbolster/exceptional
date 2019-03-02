@@ -1,7 +1,7 @@
 License
 =======
 
-Copyright © 2014, Wouter Bolsterlee
+Copyright © 2014–2019, wouter bolsterlee
 
 All rights reserved.
 
@@ -34,7 +34,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 Embedded Python standard library code
-=====================================
+-------------------------------------
 
 Some parts of this library contain (slightly modified) pieces of code
 extracted from the Python standard library; refer to the official Python
