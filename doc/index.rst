@@ -24,8 +24,8 @@ Installation
 ``exceptional`` supports reasonably modern Python versions, which at
 the time of writing means Python 3.4+.
 
-Usage and API
-=============
+Usage
+=====
 
 All functionality is available from the ``exceptional`` module::
 
@@ -55,9 +55,6 @@ decorator::
     def do_something():
         ...
 
-.. autofunction:: exceptional.suppress
-
-
 Collecting exceptions
 ---------------------
 
@@ -79,9 +76,6 @@ Note that :py:func:`exceptional.collect` cannot be used as a
 decorator, since there is no sensible way to obtain the results, and
 it could result in an ever-growing list of collected exceptions which
 cannot be cleared.
-
-.. autofunction:: exceptional.collect
-
 
 Wrapping exceptions
 -------------------
@@ -182,8 +176,6 @@ use the `set_cause` and `suppress_context` args::
     with exceptional.wrap(ValueError, CustomException, suppress_context=True):
         ...
 
-.. autofunction:: exceptional.wrap
-
 Creating exception-raising callables
 ------------------------------------
 
@@ -213,8 +205,14 @@ The callable returned by :py:func:`exceptional.raiser` will accept any
 arguments and ignore those, making them suitable for use as a
 callback, regardless of the expected signature.
 
-.. autofunction:: exceptional.raiser
 
+API
+===
+
+.. autofunction:: exceptional.suppress
+.. autofunction:: exceptional.collect
+.. autofunction:: exceptional.wrap
+.. autofunction:: exceptional.raiser
 
 Contributing
 ============
