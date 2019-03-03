@@ -14,26 +14,26 @@ def test_suppress_context_manager():
 
     # One argument
     with exceptional.suppress(ValueError):
-        raise ValueError()
+        raise ValueError
 
     # Multiple arguments
     with exceptional.suppress(ValueError, TypeError):
-        raise TypeError()
+        raise TypeError
 
     # Make sure only the right exceptions are suppressed
     with pytest.raises(ValueError):
         with exceptional.suppress(TypeError):
-            raise ValueError()
+            raise ValueError
 
 
 def test_suppress_decorator():
     @exceptional.suppress(ValueError)
     def a():
-        raise ValueError()
+        raise ValueError
 
     @exceptional.suppress(TypeError)
     def b():
-        raise ValueError()
+        raise ValueError
 
     # Should not raise
     a()
@@ -50,12 +50,12 @@ def test_collector_context_manager():
         pass
 
     with c:
-        raise TypeError()
+        raise TypeError
 
     with pytest.raises(IOError):
         with c:
             # This exception should not be collected.
-            raise IOError()
+            raise IOError
 
     exceptions = list(c)
     assert len(exceptions) == 1
