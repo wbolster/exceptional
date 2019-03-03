@@ -1,4 +1,5 @@
 import collections
+import contextlib
 import functools
 import inspect
 import operator
@@ -12,16 +13,6 @@ class Missing:
 MISSING = Missing()
 
 
-class ContextManagerDecoratorMixin:
-    def __call__(self, f):
-        @functools.wraps(f)
-        def wrapped(*args, **kwds):
-            with self:
-                return f(*args, **kwds)
-
-        return wrapped
-
-
 def suppress(*exceptions):
     """
     Suppress the specified exception(s).
@@ -31,7 +22,7 @@ def suppress(*exceptions):
     return ExceptionSuppressor(*exceptions)
 
 
-class ExceptionSuppressor(ContextManagerDecoratorMixin):
+class ExceptionSuppressor(contextlib.ContextDecorator):
     def __init__(self, *exceptions):
         self._exceptions = exceptions
 
@@ -153,7 +144,7 @@ def wrap(
     return ExceptionWrapper(mapping, format, set_cause, suppress_context)
 
 
-class ExceptionWrapper(ContextManagerDecoratorMixin):
+class ExceptionWrapper(contextlib.ContextDecorator):
     """
     Exception wrapping helper.
 
