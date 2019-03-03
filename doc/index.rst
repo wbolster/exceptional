@@ -130,7 +130,7 @@ Handling multiple exceptions can be done in two ways:
           ...
 
 * provide a mapping, which allows for more complex configuration, and
-  also correctly handled exception hierarchies::
+  also correctly handles exception hierarchies::
 
       mapping = {
           ValueError: CustomException,
