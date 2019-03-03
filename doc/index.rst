@@ -68,7 +68,7 @@ exceptions::
     collector = exceptional.collect(ValueError, TypeError)
     for item in ...:
         with collector:
-          do_something(item)
+            do_something(item)
 
 To access the collected exceptions, iterate over the collector::
 
@@ -82,6 +82,107 @@ cannot be cleared.
 
 .. autofunction:: exceptional.collect
 
+
+Wrapping exceptions
+-------------------
+
+The :py:func:`exceptional.wrap` function can be used to catch an
+exception (or multiple exceptions), and raise a replacement exception
+in its place. This should be used with care, but can be useful to to
+(partially) hide exceptions from underlying libraries by converting
+them to application-specific exceptions.
+
+By default, the original exception is set as the direct cause of the
+new exception, using a mechanism that is equivalent to a statement of
+the form::
+
+    raise NewException(...) from original
+
+In practice, this means that the Python interpreter will show both
+exceptions (including tracebacks) when the exception causes the
+application to crash. For more information, see the Python
+documentation about `exceptions
+<https://docs.python.org/3/library/exceptions.html>`_ and the `raise
+statement
+<https://docs.python.org/3/reference/simple_stmts.html#raise>`_.
+
+
+The examples below show basic usage.
+
+* A context manager can be a convenient replacement for a longer
+  ``try``/``except``/``raise from`` combination::
+
+      class ConfigurationError(Exception):
+          pass
+
+      def load_configuration(config_file):
+          with exceptional.wrap(FileNotFoundError, ConfigurationError)
+              with open(config_file, 'r') as fp:
+                  return json.load(fp)
+
+* A decorator achieves similar behaviour for a complete function::
+
+      @exceptional.wrap(FileNotFoundError, ConfigurationError)
+      def load_configuration(config_file):
+          with open(config_file, 'r') as fp:
+              return json.load(fp)
+
+The above examples replace a single exception with another one.
+Handling multiple exceptions can be done in two ways:
+
+* provide a tuple, just like a regular ``except`` statement::
+
+      with exceptional.wrap((ValueError, KeyError), CustomException):
+          ...
+
+* provide a mapping, which allows for more complex configuration, and
+  also correctly handled exception hierarchies::
+
+      mapping = {
+          ValueError: CustomException,
+          KeyError: AnotherCustomException,
+      }
+      with exceptional.wrap(mapping):
+          ...
+
+By default the message for the first exception is reused for the
+replacement exception. For more control over the message, use one of
+the following (keyword-only) arguments.
+
+* To provide a new message, use the `message` argument::
+
+      with exceptional.wrap(ValueError, CustomException, message="oops"):
+          ...
+
+* Pass ``None`` to remove the message altogether::
+
+      with exceptional.wrap(ValueError, CustomException, message=None):
+          ...
+
+* To add another message in front of the original message, use
+  `prefix`::
+
+      with exceptional.wrap(ValueError, CustomException, prefix="oops"):
+          raise ValueError("foo")
+
+  The above example results in ``CustomException("oops: foo")``.
+
+* For more flexibility, use `format` and use a ``{}`` placeholder::
+
+      template = "Something went wrong. Likely reason: {}. Please file a bug."
+      with exceptional.wrap(ValueError, CustomException, format=template):
+          ...
+
+Finally, for more control over the exception *context* and *cause*,
+use the `set_cause` and `suppress_context` args::
+
+    with exceptional.wrap(ValueError, CustomException, set_cause=False):
+        ...
+
+    with exceptional.wrap(ValueError, CustomException, suppress_context=True):
+        ...
+
+.. autofunction:: exceptional.wrap
 
 Creating exception-raising callables
 ------------------------------------
