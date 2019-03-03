@@ -219,6 +219,15 @@ def test_wrap_repr():
     assert str(x) == repr(x) == expected
 
 
+def test_wrap_decorator():
+    @exceptional.wrap(ValueError, CustomException)
+    def a():
+        raise ValueError
+
+    with pytest.raises(CustomException):
+        a()
+
+
 def test_wrap_invalid_usage():
     with pytest.raises(TypeError) as exc_info:
         exceptional.wrap({KeyError: CustomException}, CustomException)
