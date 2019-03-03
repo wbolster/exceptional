@@ -57,7 +57,8 @@ class ExceptionCollector:
     """
     Exception collectiong helper.
 
-    Use as a context manager; iterate to access the collected exceptions.
+    This should be used as a context manager. Iterate over this object to
+    access the collected exceptions.
     """
 
     def __init__(self, *exceptions):
@@ -153,7 +154,12 @@ def wrap(
 
 
 class ExceptionWrapper(ContextManagerDecoratorMixin):
-    # todo docs
+    """
+    Exception wrapping helper.
+
+    This can be used as a context manager or as a decorator.
+    """
+
     def __init__(self, mapping, format, set_cause, suppress_context):
         self._mapping = mapping
         self._format = format
