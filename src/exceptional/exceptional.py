@@ -5,6 +5,10 @@ import inspect
 import operator
 
 
+def escape_format_string(s):
+    return s.replace("{", "{{").replace("}", "}}")
+
+
 class Missing:
     def __repr__(self):
         return "<MISSING>"
@@ -120,9 +124,6 @@ def wrap(
                 mapping[exc] = replacement
         else:
             raise TypeError("not an exception class (or tuple): {!r}".format(original))
-
-    def escape_format_string(s):
-        return s.replace("{", "{{").replace("}", "}}")
 
     expressions = [
         message not in (None, MISSING),
