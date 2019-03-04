@@ -44,7 +44,7 @@ class ExceptionSuppressor(contextlib.ContextDecorator):
         return exc_type is not None and issubclass(exc_type, self._exceptions)
 
     def __repr__(self):
-        formatted = ", ".join(exc.__name__ for exc in self._exceptions)
+        formatted = ", ".join(exc.__qualname__ for exc in self._exceptions)
         return "{}.suppress({})".format(__package__, formatted)
 
 
@@ -80,7 +80,7 @@ class ExceptionCollector:
             return False
 
     def __repr__(self):
-        formatted = ", ".join(exc.__name__ for exc in self._exceptions)
+        formatted = ", ".join(exc.__qualname__ for exc in self._exceptions)
         return "{}.collect({})".format(__package__, formatted)
 
     def __iter__(self):
@@ -191,11 +191,14 @@ class ExceptionWrapper(contextlib.ContextDecorator):
             formatted = "{}"
         elif len(self._mapping) == 1:
             original, new = next(iter(self._mapping.items()))
-            formatted = "{}, {}".format(original.__name__, new.__name__)
+            formatted = "{}, {}".format(original.__qualname__, new.__qualname__)
         else:
-            original = min(self._mapping.keys(), key=operator.attrgetter("__name__"))
+            get_name = operator.attrgetter("__qualname__")
+            original = min(self._mapping.keys(), key=get_name)
             new = self._mapping[original]
-            formatted = "{{{}: {}, ...}}".format(original.__name__, new.__name__)
+            formatted = "{{{}: {}, ...}}".format(
+                original.__qualname__, new.__qualname__
+            )
 
         return "{}.wrap({}, ...)".format(__package__, formatted)
 
