@@ -8,6 +8,14 @@ def escape_format_string(s):
     return s.replace("{", "{{").replace("}", "}}")
 
 
+def is_exception(x):
+    return inspect.isclass(x) and issubclass(x, BaseException)
+
+
+def is_multiple_exceptions(x):
+    return isinstance(x, (tuple, list)) and all(is_exception(item) for item in x)
+
+
 class Missing:
     def __repr__(self):
         return "<MISSING>"
@@ -77,14 +85,6 @@ class ExceptionCollector:
 
     def __iter__(self):
         yield from self._collected_exceptions
-
-
-def is_exception(x):
-    return inspect.isclass(x) and issubclass(x, BaseException)
-
-
-def is_multiple_exceptions(x):
-    return isinstance(x, (tuple, list)) and all(is_exception(item) for item in x)
 
 
 def wrap(
