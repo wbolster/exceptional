@@ -1,6 +1,5 @@
 import collections
 import contextlib
-import functools
 import inspect
 import operator
 
