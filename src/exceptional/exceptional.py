@@ -13,7 +13,7 @@ def is_exception(x):
 
 
 def is_multiple_exceptions(x):
-    return isinstance(x, (tuple, list)) and all(is_exception(item) for item in x)
+    return isinstance(x, collections.Sequence) and all(is_exception(item) for item in x)
 
 
 class Missing:
