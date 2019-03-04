@@ -5,9 +5,9 @@ import pytest
 
 
 def test_suppress_repr():
-    x = exceptional.suppress(KeyError, IndexError)
+    suppressor = exceptional.suppress(KeyError, IndexError)
     expected = "exceptional.suppress(KeyError, IndexError)"
-    assert str(x) == repr(x) == expected
+    assert str(suppressor) == repr(suppressor) == expected
 
 
 def test_suppress_context_manager():
@@ -44,27 +44,28 @@ def test_suppress_decorator():
 
 
 def test_collector_context_manager():
-    c = exceptional.collect(ValueError, TypeError)
+    collector = exceptional.collect(ValueError, TypeError)
 
-    with c:
+    with collector:
         pass
 
-    with c:
+    with collector:
         raise TypeError
 
     with pytest.raises(IOError):
-        with c:
+        with collector:
             # This exception should not be collected.
             raise IOError
 
-    exceptions = list(c)
+    exceptions = list(collector)
     assert len(exceptions) == 1
     assert type(exceptions[0]) == TypeError
 
 
 def test_collector_repr():
-    c = exceptional.collect(ValueError, TypeError)
-    assert str(c) == repr(c) == "exceptional.collect(ValueError, TypeError)"
+    collector = exceptional.collect(ValueError, TypeError)
+    excpected = "exceptional.collect(ValueError, TypeError)"
+    assert str(collector) == repr(collector) == excpected
 
 
 class CustomException(Exception):
@@ -204,19 +205,19 @@ def test_wrap_context():
 
 
 def test_wrap_repr():
-    x = exceptional.wrap(ValueError, CustomException)
+    wrapper = exceptional.wrap(ValueError, CustomException)
     expected = "exceptional.wrap(ValueError, CustomException, ...)"
-    assert str(x) == repr(x) == expected
+    assert str(wrapper) == repr(wrapper) == expected
 
     mapping = {}
-    x = exceptional.wrap(mapping)
+    wrapper = exceptional.wrap(mapping)
     expected = "exceptional.wrap({}, ...)"
-    assert str(x) == repr(x) == expected
+    assert str(wrapper) == repr(wrapper) == expected
 
     mapping = {ValueError: CustomException, IndexError: CustomExceptionTwo}
-    x = exceptional.wrap(mapping)
+    wrapper = exceptional.wrap(mapping)
     expected = "exceptional.wrap({IndexError: CustomExceptionTwo, ...}, ...)"
-    assert str(x) == repr(x) == expected
+    assert str(wrapper) == repr(wrapper) == expected
 
 
 def test_wrap_decorator():
@@ -249,19 +250,19 @@ def test_wrap_invalid_usage():
 
 
 def test_raiser_no_args():
-    f = exceptional.raiser()
+    r = exceptional.raiser()
     with pytest.raises(Exception):
-        f()
+        r()
 
 
 def test_raiser_args():
-    f = exceptional.raiser(ValueError, "abc")
+    r = exceptional.raiser(ValueError, "abc")
 
     with pytest.raises(ValueError):
-        f()
+        r()
 
     try:
-        f(123)
+        r(123)
     except ValueError as exc:
         assert "abc" == str(exc)
     else:
