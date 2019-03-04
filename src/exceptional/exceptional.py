@@ -42,17 +42,17 @@ class ExceptionSuppressor(contextlib.ContextDecorator):
 
 def collect(*exceptions):
     """
-    Create a collector for the specified exceptions, when used as a context manager.
+    Create a collector for the specified exception(s).
+
+    This can be used as a context manager. Iterate over the returned collector
+    object to access the collected exceptions.
     """
     return ExceptionCollector(*exceptions)
 
 
 class ExceptionCollector:
     """
-    Exception collectiong helper.
-
-    This should be used as a context manager. Iterate over this object to
-    access the collected exceptions.
+    Exception collection helper; see ``collect()``.
     """
 
     def __init__(self, *exceptions):
@@ -146,9 +146,7 @@ def wrap(
 
 class ExceptionWrapper(contextlib.ContextDecorator):
     """
-    Exception wrapping helper.
-
-    This can be used as a context manager or as a decorator.
+    Exception wrapping helper; see ``wrap()``.
     """
 
     def __init__(self, mapping, format, set_cause, suppress_context):
@@ -213,7 +211,7 @@ def raiser(exception=Exception, *args, **kwargs):
 
 class ExceptionRaiser:
     """
-    Exception raising helper.
+    Exception raising helper; see ``raiser()``.
     """
 
     def __init__(self, exception_class, exception_args, exception_kwargs):
