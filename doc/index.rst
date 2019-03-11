@@ -202,7 +202,7 @@ The above cannot be done using a ``lambda`` expression, since
 ``lambda`` expressions.
 
 The callable returned by :py:func:`exceptional.raiser` will accept any
-arguments and ignore those, making them suitable for use as a
+arguments and ignore those, making it suitable for use as a
 callback, regardless of the expected signature.
 
 
