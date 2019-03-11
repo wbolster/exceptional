@@ -82,7 +82,7 @@ Wrapping exceptions
 
 The :py:func:`exceptional.wrap` function can be used to catch an
 exception (or multiple exceptions), and raise a replacement exception
-in its place. This should be used with care, but can be useful to to
+in its place. This should be used with care, but can be useful to
 (partially) hide exceptions from underlying libraries by converting
 them to application-specific exceptions.
 
