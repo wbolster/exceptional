@@ -10,6 +10,7 @@ test:
 
 lint:
 	flake8 src/exceptional
+	mypy --strict src/exceptional
 	black --check --quiet src/* test_*
 
 dist:
