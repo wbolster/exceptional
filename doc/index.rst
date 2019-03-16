@@ -22,7 +22,7 @@ Installation
   pip install exceptional
 
 ``exceptional`` supports reasonably modern Python versions, which at
-the time of writing means Python 3.4+.
+the time of writing means Python 3.6+.
 
 Usage
 =====
