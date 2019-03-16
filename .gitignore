@@ -6,4 +6,5 @@ __pycache__/
 /build/
 /dist/
 /doc/build/
+/.mypy_cache/
 /.tox/
