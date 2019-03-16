@@ -1,0 +1,25 @@
+dist: xenial
+group: travis_latest
+
+branches:
+  only:
+  - master
+
+language: python
+
+matrix:
+  include:
+  - python: "3.7"
+    env: TOXENV=py37
+  - python: "3.6"
+    env: TOXENV=py36
+  - python: "3.5"
+    env: TOXENV=py35
+  - python: "3.4"
+    env: TOXENV=py34
+
+install:
+  - pip install --upgrade tox
+
+script:
+  - tox
