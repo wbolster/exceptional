@@ -9,7 +9,7 @@ setup(
     name="exceptional",
     description="exception handling utilities",
     long_description=long_description,
-    version="1.0.0",
+    version="2.0.0",
     author="wouter bolsterlee",
     author_email="wouter@bolsterl.ee",
     url="https://github.com/wbolster/exceptional",

@@ -214,6 +214,7 @@ API
 .. autofunction:: exceptional.wrap
 .. autofunction:: exceptional.raiser
 
+
 Contributing
 ============
 
@@ -221,5 +222,19 @@ The source code and issue tracker for this package can be found on Github:
 
   https://github.com/wbolster/exceptional
 
+
+Version history
+===============
+
+* 2.0.0 (2019-03-16)
+
+  * Drop Python 3.4 and 3.5 support
+  * Add type annotations and enable strict checking using mypy
+  * Use ``__qualname__`` in various ``__repr__()`` functions
+  * Various cleanups
+
+* 1.0.0 (2019-03-03)
+
+  * Initial release
 
 .. include:: ../LICENSE.rst
