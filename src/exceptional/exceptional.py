@@ -15,7 +15,7 @@ def is_exception_class(x: typing.Any) -> bool:
 
 
 def is_multiple_exception_classes(x: typing.Any) -> bool:
-    return isinstance(x, collections.Sequence) and all(
+    return isinstance(x, collections.abc.Sequence) and all(
         is_exception_class(item) for item in x
     )
 
@@ -164,7 +164,7 @@ def wrap(  # noqa: F811
             typing.Optional[typing.Type[BaseException]],
         ]
     ]
-    if isinstance(original_or_mapping, collections.Mapping):
+    if isinstance(original_or_mapping, collections.abc.Mapping):
         if replacement is not None:
             raise TypeError(
                 "cannot specify both a mapping and a replacement exception type"
