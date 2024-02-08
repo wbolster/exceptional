@@ -250,8 +250,7 @@ class ExceptionWrapper(contextlib.ContextDecorator):
             if self._set_cause:
                 exc.__cause__ = exc_value
             if self._suppress_context:
-                # https://github.com/python/typeshed/issues/2875
-                exc.__suppress_context__ = True  # type: ignore
+                exc.__suppress_context__ = True
             raise exc
 
         return False  # Cannot be handled here.
@@ -313,7 +312,7 @@ class ExceptionRaiser:
         self.exception_kwargs = exception_kwargs
 
     def __call__(self, *_args: typing.Any, **_kwargs: typing.Any) -> None:
-        exc = self.exception_class(  # type: ignore
+        exc = self.exception_class(
             *self.exception_args, **self.exception_kwargs
         )
         raise exc
