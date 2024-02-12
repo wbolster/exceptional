@@ -114,7 +114,10 @@ class ExceptionCollector:
 
 @typing.overload
 def wrap(
-    original_or_mapping: typing.Type[BaseException],
+    original_or_mapping: typing.Union[
+        typing.Type[BaseException],
+        typing.Tuple[typing.Type[BaseException], ...],
+    ],
     replacement: typing.Type[BaseException],
     *,
     message: MissingOrMaybeString = MISSING,
@@ -139,7 +142,9 @@ def wrap(
 
 def wrap(  # noqa: F811
     original_or_mapping: typing.Union[
-        UnnormalizedExceptionMapping, typing.Type[BaseException]
+        UnnormalizedExceptionMapping,
+        typing.Type[BaseException],
+        typing.Tuple[typing.Type[BaseException], ...],
     ],
     replacement: typing.Optional[typing.Type[BaseException]] = None,
     *,
