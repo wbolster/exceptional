@@ -226,6 +226,13 @@ The source code and issue tracker for this package can be found on Github:
 Version history
 ===============
 
+* 24.1.0 (2024-02-12)
+
+  * Require Python 3.8+
+  * Modernize packaging a bit
+  * Improve typing
+  * Switch to CalVer
+
 * 2.0.0 (2019-03-16)
 
   * Drop Python 3.4 and 3.5 support
